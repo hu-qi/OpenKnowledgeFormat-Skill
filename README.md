@@ -4,38 +4,9 @@ A reusable Agent Skill for creating, validating, converting, and maintaining [Op
 
 OKF represents knowledge as Markdown files with YAML frontmatter, directory-level indexes, update logs, citations, and normal Markdown cross-links. This skill helps AI coding agents and knowledge agents turn scattered project context into portable, human-readable, agent-readable knowledge bundles.
 
-## Keywords
+## Status
 
-`open-knowledge-format`, `okf`, `knowledge-catalog`, `knowledge-bundle`, `llm-wiki`, `agent-skill`, `codex-skill`, `ai-agent`, `knowledge-as-code`, `markdown`, `yaml-frontmatter`, `metadata`, `data-catalog`, `semantic-layer`, `context-engineering`, `agent-context`, `knowledge-graph`, `data-governance`, `documentation`, `github`, `open-standard`
-
-## Suggested GitHub topics
-
-GitHub topics must be lowercase, use numbers or hyphens, be 50 characters or less, and a repository can have up to 20 topics.
-
-Recommended topics:
-
-```text
-okf
-open-knowledge-format
-agent-skill
-codex-skill
-llm-wiki
-knowledge-as-code
-knowledge-bundle
-knowledge-catalog
-data-catalog
-context-engineering
-agent-context
-markdown
-yaml-frontmatter
-data-governance
-knowledge-graph
-semantic-layer
-ai-agent
-open-standard
-documentation
-github
-```
+Initial v0.1 skill for OKF bundle creation, conversion, validation, and maintenance.
 
 ## What this skill does
 
@@ -48,6 +19,18 @@ github
 - Adds citations, cross-links, examples, tags, and schema sections.
 - Designs OKF bundle structures for data, software, product, and enterprise knowledge systems.
 
+## When to use
+
+Use this skill when you need to turn scattered project context into an OKF-compatible knowledge bundle for agents, developers, data teams, or documentation systems.
+
+Typical use cases:
+
+- Creating an OKF bundle for a software project.
+- Converting API docs, schemas, metrics, and runbooks into OKF concept files.
+- Validating whether a directory follows OKF v0.1.
+- Generating `index.md` and `log.md` files for an OKF bundle.
+- Preparing agent-readable project context for coding agents, data agents, or internal knowledge tools.
+
 ## Install / Use
 
 Use this repository as a skill source, or copy `SKILL.md` into your agent's skill directory.
@@ -56,28 +39,6 @@ Typical local layout:
 
 ```text
 .codex/skills/open-knowledge-format/SKILL.md
-```
-
-Or, when used as a standalone skill repository:
-
-```text
-OpenKnowledgeFormat-Skill/
-├── SKILL.md
-├── README.md
-├── LICENSE
-├── CHANGELOG.md
-├── CONTRIBUTING.md
-├── CODE_OF_CONDUCT.md
-├── SECURITY.md
-├── examples/
-│   └── software-project-okf/
-├── templates/
-│   └── concept.md
-└── .github/
-    ├── ISSUE_TEMPLATE/
-    │   ├── bug_report.md
-    │   └── request.md
-    └── pull_request_template.md
 ```
 
 ## Example prompts
@@ -115,6 +76,8 @@ Generate index.md and log.md files for this OKF bundle.
 │   └── concept.md
 └── .github/
     ├── ISSUE_TEMPLATE/
+    │   ├── bug_report.md
+    │   └── request.md
     └── pull_request_template.md
 ```
 
