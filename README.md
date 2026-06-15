@@ -1,5 +1,7 @@
 # Open Knowledge Format Skill
 
+[中文文档](README.zh-CN.md)
+
 A reusable Agent Skill for creating, validating, converting, and maintaining [Open Knowledge Format](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf) knowledge bundles.
 
 OKF represents knowledge as Markdown files with YAML frontmatter, directory-level indexes, update logs, citations, and normal Markdown cross-links. This skill helps AI coding agents and knowledge agents turn scattered project context into portable, human-readable, agent-readable knowledge bundles.
@@ -33,7 +35,13 @@ Typical use cases:
 
 ## Install / Use
 
-Use this repository as a skill source, or copy `SKILL.md` into your agent's skill directory.
+Install with the skills CLI:
+
+```bash
+npx skills add hu-qi/OpenKnowledgeFormat-Skill
+```
+
+Or copy `SKILL.md` into your agent's skill directory manually.
 
 Typical local layout:
 
@@ -65,6 +73,7 @@ Generate index.md and log.md files for this OKF bundle.
 .
 ├── SKILL.md
 ├── README.md
+├── README.zh-CN.md
 ├── LICENSE
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
