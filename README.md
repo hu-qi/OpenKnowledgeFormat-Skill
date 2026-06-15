@@ -8,6 +8,35 @@ OKF represents knowledge as Markdown files with YAML frontmatter, directory-leve
 
 `open-knowledge-format`, `okf`, `knowledge-catalog`, `knowledge-bundle`, `llm-wiki`, `agent-skill`, `codex-skill`, `ai-agent`, `knowledge-as-code`, `markdown`, `yaml-frontmatter`, `metadata`, `data-catalog`, `semantic-layer`, `context-engineering`, `agent-context`, `knowledge-graph`, `data-governance`, `documentation`, `github`, `open-standard`
 
+## Suggested GitHub topics
+
+GitHub topics must be lowercase, use numbers or hyphens, be 50 characters or less, and a repository can have up to 20 topics.
+
+Recommended topics:
+
+```text
+okf
+open-knowledge-format
+agent-skill
+codex-skill
+llm-wiki
+knowledge-as-code
+knowledge-bundle
+knowledge-catalog
+data-catalog
+context-engineering
+agent-context
+markdown
+yaml-frontmatter
+data-governance
+knowledge-graph
+semantic-layer
+ai-agent
+open-standard
+documentation
+github
+```
+
 ## What this skill does
 
 - Creates OKF bundles from project docs, schemas, APIs, metrics, runbooks, and wiki content.
@@ -35,8 +64,20 @@ Or, when used as a standalone skill repository:
 OpenKnowledgeFormat-Skill/
 ├── SKILL.md
 ├── README.md
+├── LICENSE
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── CODE_OF_CONDUCT.md
+├── SECURITY.md
 ├── examples/
-└── templates/
+│   └── software-project-okf/
+├── templates/
+│   └── concept.md
+└── .github/
+    ├── ISSUE_TEMPLATE/
+    │   ├── bug_report.md
+    │   └── request.md
+    └── pull_request_template.md
 ```
 
 ## Example prompts
