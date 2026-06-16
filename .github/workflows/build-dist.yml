@@ -2,12 +2,22 @@ name: Build Skill Dist
 
 on:
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Release tag to create or update"
+        required: true
+        default: "v0.1.0"
+      publish_release:
+        description: "Create or update a GitHub Release"
+        required: true
+        default: true
+        type: boolean
   push:
     tags:
       - "v*"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -16,6 +26,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Resolve release metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            release_tag="${GITHUB_REF_NAME}"
+            publish_release="true"
+          else
+            release_tag="${{ inputs.release_tag }}"
+            publish_release="${{ inputs.publish_release }}"
+          fi
+
+          echo "release_tag=${release_tag}" >> "$GITHUB_ENV"
+          echo "publish_release=${publish_release}" >> "$GITHUB_ENV"
+          echo "release_title=Open Knowledge Format Skill ${release_tag}" >> "$GITHUB_ENV"
 
       - name: Validate skill package
         shell: bash
@@ -58,8 +85,37 @@ jobs:
           cd dist
           zip -r open-knowledge-format-skill.zip open-knowledge-format-skill
 
-      - name: Upload artifact
+      - name: Upload workflow artifact
         uses: actions/upload-artifact@v4
         with:
           name: open-knowledge-format-skill
           path: dist/open-knowledge-format-skill.zip
+
+      - name: Publish GitHub Release
+        if: env.publish_release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          notes_file="docs/releases/${release_tag}.md"
+          if [ ! -f "$notes_file" ] && [ "$release_tag" = "v0.1.0" ]; then
+            notes_file="docs/releases/v0.1.0.md"
+          fi
+
+          if [ -f "$notes_file" ]; then
+            notes_args=(--notes-file "$notes_file")
+          else
+            notes_args=(--notes "Release ${release_tag}")
+          fi
+
+          if gh release view "$release_tag" >/dev/null 2>&1; then
+            gh release upload "$release_tag" dist/open-knowledge-format-skill.zip --clobber
+          else
+            gh release create "$release_tag" \
+              dist/open-knowledge-format-skill.zip \
+              --target "$GITHUB_SHA" \
+              --title "$release_title" \
+              "${notes_args[@]}"
+          fi
