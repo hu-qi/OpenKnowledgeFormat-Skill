@@ -1,0 +1,62 @@
+name: Build Skill Dist
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate skill package
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test -f SKILL.md
+          test -f README.md
+          test -f README.zh-CN.md
+          test -f LICENSE
+          test -f templates/concept.md
+          test -d examples/software-project-okf
+
+          grep -q '^name:' SKILL.md
+          grep -q '^description:' SKILL.md
+          grep -q 'npx skills add hu-qi/OpenKnowledgeFormat-Skill' README.md
+          grep -q 'npx skills add hu-qi/OpenKnowledgeFormat-Skill' README.zh-CN.md
+
+          if find examples/software-project-okf -path '*/index.md' ! -path 'examples/software-project-okf/index.md' -print0 | xargs -0 -r awk 'FNR == 1 && $0 == "---" { print FILENAME; exit 1 }'; then
+            echo "Subdirectory index.md files are valid."
+          else
+            echo "Non-root index.md files must not contain YAML frontmatter."
+            exit 1
+          fi
+
+      - name: Build dist zip
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          package_dir="dist/open-knowledge-format-skill"
+          mkdir -p "$package_dir"
+
+          cp SKILL.md README.md README.zh-CN.md LICENSE "$package_dir/"
+          cp -R templates examples "$package_dir/"
+
+          cd dist
+          zip -r open-knowledge-format-skill.zip open-knowledge-format-skill
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: open-knowledge-format-skill
+          path: dist/open-knowledge-format-skill.zip
