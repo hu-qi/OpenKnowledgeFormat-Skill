@@ -75,12 +75,18 @@ Unknown frontmatter fields are allowed and should be preserved.
 
 ### Reserved files
 
-The following filenames are reserved and should not be treated as normal concept documents:
+The following filenames are reserved and must not be treated as normal concept documents:
 
 - `index.md`: directory listing for progressive disclosure.
 - `log.md`: chronological update history.
 
-A bundle-root `index.md` may include frontmatter only when declaring the OKF version:
+Hard rule for `index.md` frontmatter:
+
+- The bundle-root `index.md` may include YAML frontmatter only to declare `okf_version`.
+- Non-root `index.md` files must not contain frontmatter.
+- Do not generate `okf_version` in subdirectory indexes such as `concepts/index.md`, `references/index.md`, or `insights/index.md`.
+
+Valid bundle-root `index.md` version declaration:
 
 ```yaml
 ---
@@ -88,17 +94,45 @@ okf_version: "0.1"
 ---
 ```
 
+Valid subdirectory `index.md` shape:
+
+```markdown
+# Concepts
+
+## Business Concepts
+
+- [Compliance Checking](./compliance_checking.md) - Compliance checking related concept.
+```
+
+`index.md` should primarily provide navigation. Do not place concept body content, long explanations, or source material in `index.md`; create concept files instead and link to them.
+
 ### Links
 
 Use standard Markdown links to connect concepts.
 
-Prefer bundle-root links for cross-directory references:
+Prefer bundle-relative links for cross-directory references because they are stable when documents move:
 
 ```markdown
 [Customers](/tables/customers.md)
 ```
 
-Relative links are also valid. Broken links should be reported as warnings, not fatal errors.
+Relative links are also valid for nearby files:
+
+```markdown
+[Neighbor](./neighbor.md)
+```
+
+When generating or editing a bundle, verify internal Markdown links against the actual file tree. Broken links are warnings for consumers, but production-quality bundles should fix them before delivery.
+
+Common path mistake to avoid:
+
+```markdown
+<!-- Wrong when target is inside the same concepts subtree -->
+[Calculation Validation](../industry/calculation_validation.md)
+
+<!-- Prefer -->
+[Calculation Validation](/concepts/industry/calculation_validation.md)
+```
 
 ### Citations
 
@@ -116,10 +150,11 @@ Citation links may point to external URLs, bundle-relative files, or files under
 4. Create one Markdown file per concept.
 5. Add YAML frontmatter with at least `type`.
 6. Add concise body sections such as Overview, Details, Schema, Examples, Relationships, and Citations when useful.
-7. Add links between related concepts.
+7. Add links between related concepts; prefer bundle-relative links for cross-directory references.
 8. Generate directory-level `index.md` files when navigation matters.
-9. Generate or update `log.md`.
-10. Validate the bundle before reporting completion.
+9. Ensure only the bundle-root `index.md` has optional `okf_version` frontmatter; subdirectory indexes must not have frontmatter.
+10. Generate or update `log.md`.
+11. Validate the bundle before reporting completion.
 
 ### Convert existing material to OKF
 
@@ -130,7 +165,8 @@ Citation links may point to external URLs, bundle-relative files, or files under
 5. Add `title`, `description`, `tags`, and `resource` where available.
 6. Add cross-links rather than duplicating repeated explanations.
 7. Generate indexes and logs.
-8. Report converted files, skipped material, assumptions, and follow-up gaps.
+8. Verify generated links against the final file tree.
+9. Report converted files, skipped material, assumptions, and follow-up gaps.
 
 ### Validate an OKF bundle
 
@@ -141,9 +177,12 @@ Check these items:
 - Every concept file starts with parseable YAML frontmatter.
 - Every concept frontmatter has a non-empty `type`.
 - Recommended fields are present where useful.
+- The bundle-root `index.md` may have `okf_version` frontmatter.
+- Non-root `index.md` files do not have frontmatter.
+- `index.md` files focus on navigation and progressive disclosure.
 - Markdown links are syntactically valid.
-- Broken links are warnings, not fatal errors.
-- `index.md` files list nearby concepts clearly.
+- Internal links resolve against the actual bundle file tree.
+- Broken links are warnings for consumption, but should be fixed before delivery when possible.
 - `log.md` date headings use `YYYY-MM-DD`.
 - External claims have citations.
 
@@ -168,8 +207,10 @@ For each directory:
 1. Read direct child concept files and subdirectories.
 2. Extract `title` and `description` from frontmatter where available.
 3. Group entries by type or subdirectory.
-4. Use relative links.
+4. Use relative links within the same directory and bundle-relative links for cross-directory references.
 5. Keep entries concise.
+6. Do not add frontmatter to non-root `index.md` files.
+7. Do not use `index.md` as a concept article or long-form content page.
 
 ### Generate log.md
 
@@ -192,7 +233,9 @@ For each relevant directory:
 - Do not embed secrets, credentials, private tokens, or sensitive internal URLs.
 - Use citations for source-backed claims.
 - Prefer links over duplicated content.
+- Prefer bundle-relative links for cross-directory concept references.
 - Treat `index.md` as navigation and `log.md` as traceability.
+- Never add YAML frontmatter to non-root `index.md` files.
 
 ## Recommended type names
 
@@ -224,6 +267,10 @@ Before finalizing OKF output, verify:
 - The bundle or file paths are clear.
 - Concept files have required frontmatter.
 - Reserved files are not accidentally treated as concepts.
+- Only the bundle-root `index.md` has optional `okf_version` frontmatter.
+- Subdirectory `index.md` files have no frontmatter.
+- `index.md` files are navigational and not concept bodies.
+- Internal links resolve correctly.
 - Links are useful and not excessive.
 - Citations are present for factual source material.
 - The result can be read by humans and selectively loaded by agents.
