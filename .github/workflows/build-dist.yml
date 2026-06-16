@@ -34,12 +34,15 @@ jobs:
           grep -q 'npx skills add hu-qi/OpenKnowledgeFormat-Skill' README.md
           grep -q 'npx skills add hu-qi/OpenKnowledgeFormat-Skill' README.zh-CN.md
 
-          if find examples/software-project-okf -path '*/index.md' ! -path 'examples/software-project-okf/index.md' -print0 | xargs -0 -r awk 'FNR == 1 && $0 == "---" { print FILENAME; exit 1 }'; then
-            echo "Subdirectory index.md files are valid."
-          else
-            echo "Non-root index.md files must not contain YAML frontmatter."
-            exit 1
-          fi
+          while IFS= read -r index_file; do
+            first_line="$(head -n 1 "$index_file")"
+            if [ "$first_line" = "---" ]; then
+              echo "Non-root index.md must not contain YAML frontmatter: $index_file"
+              exit 1
+            fi
+          done < <(find examples/software-project-okf -path '*/index.md' ! -path 'examples/software-project-okf/index.md' | sort)
+
+          echo "Skill package validation passed."
 
       - name: Build dist zip
         shell: bash
