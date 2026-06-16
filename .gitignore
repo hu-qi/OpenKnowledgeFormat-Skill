@@ -12,6 +12,9 @@ Thumbs.db
 .tmp/
 temp/
 
+# Build artifacts
+dist/
+
 # Environment files
 .env
 .env.*
