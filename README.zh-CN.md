@@ -41,7 +41,7 @@ OKF 使用带 YAML frontmatter 的 Markdown 文件、目录级索引、更新日
 npx skills add hu-qi/OpenKnowledgeFormat-Skill
 ```
 
-也可以手动复制 `SKILL.md` 到你的 Agent Skill 目录。
+也可以手动复制整个 `skills/open-knowledge-format/` 目录到你的 Agent Skill 目录，确保模板和示例一并保留。
 
 典型本地目录结构：
 
@@ -71,7 +71,9 @@ Generate index.md and log.md files for this OKF bundle.
 
 ```text
 .
-├── SKILL.md
+├── skills/
+│   └── open-knowledge-format/
+│       ├── SKILL.md
 ├── README.md
 ├── README.zh-CN.md
 ├── LICENSE
@@ -79,9 +81,9 @@ Generate index.md and log.md files for this OKF bundle.
 ├── CONTRIBUTING.md
 ├── CODE_OF_CONDUCT.md
 ├── SECURITY.md
-├── examples/
+│       ├── examples/
 │   └── software-project-okf/
-├── templates/
+│       └── templates/
 │   └── concept.md
 └── .github/
     ├── ISSUE_TEMPLATE/
