@@ -49,15 +49,15 @@ jobs:
         run: |
           set -euo pipefail
 
-          test -f SKILL.md
+          test -f skills/open-knowledge-format/SKILL.md
           test -f README.md
           test -f README.zh-CN.md
           test -f LICENSE
-          test -f templates/concept.md
-          test -d examples/software-project-okf
+          test -f skills/open-knowledge-format/templates/concept.md
+          test -d skills/open-knowledge-format/examples/software-project-okf
 
-          grep -q '^name:' SKILL.md
-          grep -q '^description:' SKILL.md
+          grep -q '^name:' skills/open-knowledge-format/SKILL.md
+          grep -q '^description:' skills/open-knowledge-format/SKILL.md
           grep -q 'npx skills add hu-qi/OpenKnowledgeFormat-Skill' README.md
           grep -q 'npx skills add hu-qi/OpenKnowledgeFormat-Skill' README.zh-CN.md
 
@@ -67,7 +67,7 @@ jobs:
               echo "Non-root index.md must not contain YAML frontmatter: $index_file"
               exit 1
             fi
-          done < <(find examples/software-project-okf -path '*/index.md' ! -path 'examples/software-project-okf/index.md' | sort)
+          done < <(find skills/open-knowledge-format/examples/software-project-okf -path '*/index.md' ! -path 'skills/open-knowledge-format/examples/software-project-okf/index.md' | sort)
 
           echo "Skill package validation passed."
 
@@ -79,8 +79,8 @@ jobs:
           package_dir="dist/open-knowledge-format-skill"
           mkdir -p "$package_dir"
 
-          cp SKILL.md README.md README.zh-CN.md LICENSE "$package_dir/"
-          cp -R templates examples "$package_dir/"
+          cp skills/open-knowledge-format/SKILL.md README.md README.zh-CN.md LICENSE "$package_dir/"
+          cp -R skills/open-knowledge-format/templates skills/open-knowledge-format/examples "$package_dir/"
 
           cd dist
           zip -r open-knowledge-format-skill.zip open-knowledge-format-skill

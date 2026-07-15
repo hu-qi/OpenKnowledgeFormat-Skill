@@ -41,7 +41,7 @@ Install with the skills CLI:
 npx skills add hu-qi/OpenKnowledgeFormat-Skill
 ```
 
-Or copy `SKILL.md` into your agent's skill directory manually.
+Or copy the entire `skills/open-knowledge-format/` directory into your agent's skill directory so templates and examples remain available.
 
 Typical local layout:
 
@@ -71,7 +71,9 @@ Generate index.md and log.md files for this OKF bundle.
 
 ```text
 .
-├── SKILL.md
+├── skills/
+│   └── open-knowledge-format/
+│       ├── SKILL.md
 ├── README.md
 ├── README.zh-CN.md
 ├── LICENSE
@@ -79,9 +81,9 @@ Generate index.md and log.md files for this OKF bundle.
 ├── CONTRIBUTING.md
 ├── CODE_OF_CONDUCT.md
 ├── SECURITY.md
-├── examples/
+│       ├── examples/
 │   └── software-project-okf/
-├── templates/
+│       └── templates/
 │   └── concept.md
 └── .github/
     ├── ISSUE_TEMPLATE/
